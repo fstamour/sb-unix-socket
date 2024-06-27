@@ -149,7 +149,7 @@ exit it's event loop)."))
 (defun make-server (name
                     &key (type :stream)
                       abstractp address handler
-                      (backlog 0))
+                      (backlog 1))
   "Create a local-socket (a.k.a unix domain socket).
 TYPE should be one of :stream or :datagram."
   (check-type type (member :stream :datagram))
