@@ -132,8 +132,8 @@ incoming connections.")
     :initform "unix-socket-server"
     :initarg :name
     :accessor name
-    :documentation "A friendly name for this server, this is use to give nice names to the
-threads spawned by the server.")
+    :documentation "A friendly name for this server, this is used to give nice names to
+the threads spawned by the server.")
    (handler
     :initform nil
     :initarg :handler
@@ -153,13 +153,15 @@ exit it's event loop)."))
   "Create a local-socket (a.k.a unix domain socket).
 TYPE should be one of :stream or :datagram."
   (check-type type (member :stream :datagram))
-  (check-type address string)
+  (check-type address (or string pathname))
   (make-instance
    'server
    :name name
    :socket (make-unix-socket
             :type type :abstractp abstractp)
-   :address address
+   :address (etypecase address
+              (string address)
+              (pathname (namestring address)))
    :handler handler
    :backlog backlog))
 
