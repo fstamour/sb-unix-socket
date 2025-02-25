@@ -126,8 +126,8 @@ socket is abstract.")
     :initarg :backlog
     :accessor backlog
     :type (integer 1)
-    :documentation "How many of pending connections are before the kernel rejects new
-incoming connections.")
+    :documentation "How many pending connections are queued before the kernel rejects
+new incoming connections (see \"man 2 listen\").")
    (name
     :initform "unix-socket-server"
     :initarg :name
@@ -149,7 +149,8 @@ exit it's event loop)."))
 (defun make-server (name
                     &key (type :stream)
                       abstractp address handler
-                      (backlog 1))
+                      (backlog 128 #| 2025-02-24 according to listen(2),
+                                      that's the default on linux |#))
   "Create a local-socket (a.k.a unix domain socket).
 TYPE should be one of :stream or :datagram."
   (check-type type (member :stream :datagram))
